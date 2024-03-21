@@ -1,0 +1,30 @@
+.offline{
+    color: #23120B;
+    user-select: none;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.offline .heading{
+    margin-top: 5px;
+}
+
+.offline>.heading:nth-child(1){
+    margin-bottom: 10px;
+}
+
+.offline button{
+    margin-top: 20px;
+}
+
+.heading>span{
+    position: relative;
+}
+
+.heading>span>.times{
+    font-size: 0.4em;
+    position: absolute;
+    bottom: 15px;
+    left:  40px;
+    color: red;
+}
