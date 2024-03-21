@@ -34,7 +34,8 @@ export function getMaximumTimestamp(data) {
 }
 
 export function filterByRecentTime(data, timeThresholdInHours = 1) {
-    const currentTimestamp = getMaximumTimestamp(data);
+    const currentTimestamp = data.Current ? data.Current.Timestamp : 0;
+    // const currentTimestamp = getMaximumTimestamp(data);
     const thresholdTimestamp = currentTimestamp - timeThresholdInHours * 60 * 60 * 1000;
     const filteredData = Object.fromEntries(
       Object.entries(data).filter(([key]) => key >= thresholdTimestamp)

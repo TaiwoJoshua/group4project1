@@ -7,7 +7,9 @@ import Chart from './pages/Chart';
 import Temperature from './pages/Temperature';
 import Pressure from './pages/Pressure';
 import Humidity from './pages/Humidity';
-import data from './readings.json';
+import { child, get, ref } from "firebase/database";
+import { database } from './api';
+import { getMaximumTimestamp } from './AppManager';
 
 const transition = { duration: 0.5 };
 
@@ -18,29 +20,44 @@ const AnimatedRoute = ({ children }) => (
     animate={{ opacity: 1, x: 0 }}
     exit={{ opacity: 0, x: 100 }}
     transition={transition}
-  >
+    >
     {children}
   </motion.div>
 );
 
 export default function App() {
+  const [data, setData] = React.useState({});
   const [readings, setReadings] = React.useState({});
   const [current, setCurrent] = React.useState({Temperature: 0, Pressure: 0, Humidity: 0, Timestamp: 0});
 
-  React.useState(() => {
+  React.useEffect(() => {
+    const dbRef = ref(database);
+    get(child(dbRef, `/`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        setData(snapshot.val());
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+  }, []);
+
+  React.useEffect(() => {
     const reads = {};
     for (const key in data) {
-      if (Object.hasOwnProperty.call(data, key) && key !== "Current") {
+      if (Object.hasOwnProperty.call(data, key)) {
         const reading = data[key];
         if(reading.Temperature && reading.Humidity && reading.Timestamp){
           reads[reading.Timestamp] = reading;
         }
       }
     }
-    reads["Current"] = data["Current"];
+    const maxTime = getMaximumTimestamp(reads);
+    reads["Current"] = reads[maxTime];
     setReadings(reads);
     setCurrent(reads["Current"]);
-  }, []);
+  }, [data]);
   
   const routes = [
     { path: '/', element: <Chart />, errorElement: <Error /> },
