@@ -1,7 +1,7 @@
 import React from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-import { filterByRecentTime, formatTimestamp, getMaximumArrayValue } from '../AppManager';
+import { calculateAverage, filterByCurrMonthOrWeek, filterByRecentTime, getMaximumArrayValue, sortProperties } from '../AppManager';
 import sun from '../images/sun.png';
 import snow from '../images/snow.png';
 
@@ -10,6 +10,8 @@ export default function Chart({ readings }) {
     const [data, setData] = React.useState({ temperature: [], humidity: [], timestamp: [] });
     const [range, setRange] = React.useState(1);
     const [flip, setFlip] = React.useState(false);
+    const [week, setWeek] = React.useState({ temperature: 0, humidity: 0 });
+    const [month, setMonth] = React.useState({ temperature: 0, humidity: 0 });
     
     React.useEffect(() => {
         if(flip){
@@ -26,13 +28,7 @@ export default function Chart({ readings }) {
 
     React.useEffect(() => {
         const reads = filterByRecentTime(readings, range);
-        let newData = { temperature: [], humidity: [], timestamp: [] };
-        for (const key in reads) {
-            if (Object.hasOwnProperty.call(reads, key)) {
-                const read = reads[key];
-                newData = { ...newData, temperature: [...newData.temperature, read.Temperature], humidity: [...newData.humidity, read.Humidity], timestamp: [...newData.timestamp, formatTimestamp(read.Timestamp)] };
-            }
-        }
+        let newData = sortProperties(reads);
         let temps = newData.temperature;
         const maxTemp = getMaximumArrayValue(temps);
         let maxTempFound = false;
@@ -71,6 +67,26 @@ export default function Chart({ readings }) {
         });
         setData({ temperature: temps, humidity: humds, timestamp: newData.timestamp });
     }, [readings, range]);
+
+    React.useEffect(() => {
+        if(data.temperature.length !== 0){
+            const monthData = filterByCurrMonthOrWeek(readings);
+            const separated = sortProperties(monthData);
+            const temperatureAverage = calculateAverage(separated.temperature);
+            const humidityAverage = calculateAverage(separated.humidity);
+            setMonth({ temperature: temperatureAverage, humidity: humidityAverage });
+        }
+    }, [readings, data]);
+
+    React.useEffect(() => {
+        if(data.temperature.length !== 0){
+            const weekData = filterByCurrMonthOrWeek(readings, "w");
+            const separated = sortProperties(weekData);
+            const temperatureAverage = calculateAverage(separated.temperature);
+            const humidityAverage = calculateAverage(separated.humidity);
+            setWeek({ temperature: temperatureAverage, humidity: humidityAverage });
+        }
+    }, [readings, data]);
 
     const options = {
         chart: {
@@ -164,6 +180,8 @@ export default function Chart({ readings }) {
             <span>
                 <input type="checkbox" name="flip" id='flip' onChange={handleFlip} checked={flip} />
                 <label htmlFor="flip">Flip</label>
+                <span>Month Average: Temperature - {month.temperature} Humidity - {month.humidity}</span>
+                <span>Week Average: Temperature - {week.temperature} Humidity - {week.humidity}</span>
             </span>
         </div>
     )

@@ -19,6 +19,7 @@ main>div:has(.chart){
 
 #navbar{
   padding: 5px;
+  text-align: center;
 }
 
 #navbar>ul{
@@ -53,6 +54,26 @@ main>div:has(.chart){
 
 #navbar>ul>li>a>svg{
   margin-right: 5px;
+}
+
+@media screen and (max-width: 500px) {
+  #navbar>ul>li>a>span{
+    width: 0px;
+    font-size: 0.9em;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation-delay: 200ms;
+    transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  
+  #navbar>ul>li>a:hover>span, #navbar>ul>li>a.active>span{
+    width: 100%;
+    transform: scaleX(1);
+  }
+}
+
+.highcharts-credits{
+  display: none;  
 }
 
 #wrapper {
@@ -194,7 +215,7 @@ main>div:has(.chart){
   --percentage: var(--value);
   --primary: #369;
   --secondary: #adf;
-  --size: 250px;
+  --size: 220px;
   animation: progress 2s 0.5s forwards;
   width: var(--size);
   aspect-ratio: 1;
@@ -249,8 +270,10 @@ main>div:has(.chart){
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%) scale(1.25);
-	width: 150px;
-	height: 150px;
+	width: 160px;
+	height: 160px;
+  border: 3px solid white;
+  background-color: white;
 	border-radius: 50%;
 	overflow: hidden;
 }

@@ -42,3 +42,34 @@ export function filterByRecentTime(data, timeThresholdInHours = 1) {
     );
     return filteredData;
 }
+
+function getDateWeek(date = 0) {
+	const currentDate = date !== 0 ? date : new Date();
+	const januaryFirst = new Date(currentDate.getFullYear(), 0, 1);
+	const daysToNextMonday = (januaryFirst.getDay() === 1) ? 0 : (7 - januaryFirst.getDay()) % 7;
+	const nextMonday = new Date(currentDate.getFullYear(), 0, januaryFirst.getDate() + daysToNextMonday);
+	return (currentDate < nextMonday) ? 52 : (currentDate > nextMonday ? Math.ceil((currentDate - nextMonday) / (24 * 3600 * 1000) / 7) : 1);
+}
+
+export function filterByCurrMonthOrWeek(data, type = "m") {
+    const currentTimestamp = new Date();
+    const filteredData = Object.fromEntries(
+      Object.entries(data).filter(([key]) => key !== "Current" && (type === "w" ? getDateWeek(new Date(parseInt(key))) === getDateWeek() : new Date(parseInt(key))?.getMonth() === currentTimestamp.getMonth()))
+    );
+    return filteredData;
+}
+
+export function calculateAverage(array) {
+    return (array.reduce((sum, current) => sum + current) / array.length).toFixed(2);
+}
+
+export function sortProperties(data){
+    let newData = { temperature: [], humidity: [], timestamp: [] };
+    for (const key in data) {
+        if (Object.hasOwnProperty.call(data, key)) {
+            const read = data[key];
+            newData = { ...newData, temperature: [...newData.temperature, read.Temperature], humidity: [...newData.humidity, read.Humidity], timestamp: [...newData.timestamp, formatTimestamp(read.Timestamp)] };
+        }
+    }
+    return newData;
+}

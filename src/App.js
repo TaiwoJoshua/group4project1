@@ -44,7 +44,7 @@ export default function App() {
   }, []);
 
   React.useEffect(() => {
-    const reads = {};
+    let reads = {};
     for (const key in data) {
       if (Object.hasOwnProperty.call(data, key)) {
         const reading = data[key];
@@ -53,6 +53,13 @@ export default function App() {
         }
       }
     }
+    reads = Object.keys(reads).sort().reduce(
+      (obj, key) => { 
+        obj[key] = reads[key]; 
+        return obj;
+      }, 
+      {}
+    );
     const maxTime = getMaximumTimestamp(reads);
     reads["Current"] = reads[maxTime];
     setReadings(reads);
@@ -60,7 +67,7 @@ export default function App() {
   }, [data]);
   
   const routes = [
-    { path: '/', element: <Chart />, errorElement: <Error /> },
+    { path: '/', element: <Chart readings={readings} />, errorElement: <Error /> },
     { path: 'chart', element: <Chart readings={readings} /> },
     { path: 'temperature', element: <Temperature current={current} /> },
     { path: 'humidity', element: <Humidity current={current} /> },
