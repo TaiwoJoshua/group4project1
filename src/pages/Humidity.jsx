@@ -5,7 +5,7 @@ export default function Humidity({ current }) {
   const [humidity, setHumidity] = React.useState(0);
 
   React.useEffect(() => {
-    setHumidity(current.Humidity);
+    setHumidity(current?.Humidity);
   }, [current]);
 
   const transform = -1 * ((humidity * (105 - 50) * 0.01) + 50);
@@ -24,7 +24,7 @@ export default function Humidity({ current }) {
           </span>
           <span>
             <strong>Time Taken:</strong>
-            {formatTimestamp(current.Timestamp)}
+            {current ? formatTimestamp(current?.Timestamp) : ""}
           </span>
         </div>
     </div>

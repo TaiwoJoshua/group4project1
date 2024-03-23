@@ -1,17 +1,26 @@
 import React from 'react'
+import { formatTimestamp } from '../AppManager';
 
-export default function Pressure() {
+export default function Pressure({ current }) {
+  const [pressure, setPressure] = React.useState(0);
+
+    React.useEffect(() => {
+        setTimeout(() => {
+          setPressure(current?.Pressure);
+        }, 500);
+    }, [current]);
+
   return (
     <div className='pressure'>
-        <div role="progressbar" aria-valuenow="67" aria-valuemin="0" aria-valuemax="100" style={{"--value": 67}}></div>
+        <div role="progressbar" aria-valuenow={pressure.toString()} aria-valuemin="0" aria-valuemax="200" style={{"--value": pressure}}></div>
         <div className='data-label'>
           <span>
             <strong>Pressure:</strong>
-            67Pa
+            {pressure} HPa
           </span>
           <span>
             <strong>Time Taken:</strong>
-            1985‑09‑25 17:45:30
+            {current ? formatTimestamp(current?.Timestamp) : ""}
           </span>
         </div>
     </div>

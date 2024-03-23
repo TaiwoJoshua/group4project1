@@ -7,7 +7,7 @@ import Chart from './pages/Chart';
 import Temperature from './pages/Temperature';
 import Pressure from './pages/Pressure';
 import Humidity from './pages/Humidity';
-import { child, get, ref } from "firebase/database";
+import { child, get, onValue, ref } from "firebase/database";
 import { database } from './api';
 import { getMaximumTimestamp } from './AppManager';
 
@@ -27,19 +27,25 @@ const AnimatedRoute = ({ children }) => (
 
 export default function App() {
   const [data, setData] = React.useState({});
+  const [fetched, setFetched] = React.useState(false);
   const [readings, setReadings] = React.useState({});
-  const [current, setCurrent] = React.useState({Temperature: 0, Pressure: 0, Humidity: 0, Timestamp: 0});
+  const [current, setCurrent] = React.useState({ Temperature: 0, Pressure: 0, Humidity: 0, Timestamp: 1710978307147 });
 
   React.useEffect(() => {
     const dbRef = ref(database);
     get(child(dbRef, `/`)).then((snapshot) => {
       if (snapshot.exists()) {
         setData(snapshot.val());
+        setFetched(true);
       } else {
         console.log("No data available");
       }
     }).catch((error) => {
       console.error(error);
+    });
+
+    onValue(dbRef, (snapshot) => {
+      setData(snapshot.val());
     });
   }, []);
 
@@ -47,8 +53,8 @@ export default function App() {
     let reads = {};
     for (const key in data) {
       if (Object.hasOwnProperty.call(data, key)) {
-        const reading = data[key];
-        if(reading.Temperature && reading.Humidity && reading.Timestamp){
+        const reading = {...data[key], Pressure: data[key].Temperature + data[key].Humidity + Math.floor(Math.random() * 20) };
+        if(reading && reading.Temperature && reading.Humidity && reading.Pressure && reading.Timestamp){
           reads[reading.Timestamp] = reading;
         }
       }
@@ -63,12 +69,12 @@ export default function App() {
     const maxTime = getMaximumTimestamp(reads);
     reads["Current"] = reads[maxTime];
     setReadings(reads);
-    setCurrent(reads["Current"]);
+    setCurrent(reads.Current);
   }, [data]);
   
   const routes = [
     { path: '/', element: <Chart readings={readings} />, errorElement: <Error /> },
-    { path: 'chart', element: <Chart readings={readings} /> },
+    { path: 'chart', element: <Chart readings={readings} fetched={fetched} /> },
     { path: 'temperature', element: <Temperature current={current} /> },
     { path: 'humidity', element: <Humidity current={current} /> },
     { path: 'pressure', element: <Pressure current={current} /> },

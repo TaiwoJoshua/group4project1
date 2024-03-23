@@ -4,11 +4,11 @@ import { formatTimestamp } from '../AppManager';
 export default function Temperature({ current }) {
     const [temp, setTemp] = React.useState(0);
 
-    React.useState(() => {
+    React.useEffect(() => {
         setTimeout(() => {
-            setTemp(current.Temperature);
+            setTemp(current?.Temperature);
         }, 500);
-    }, []);
+    }, [current]);
 
     React.useEffect(() => {
         const config = { minTemp: 0, maxTemp: 100 };
@@ -30,7 +30,7 @@ export default function Temperature({ current }) {
                 </span>
                 <span>
                     <strong>Time Taken:</strong>
-                    {formatTimestamp(current.Timestamp)}
+                    {current ? formatTimestamp(current?.Timestamp) : ""}
                 </span>
             </div>
         </div>

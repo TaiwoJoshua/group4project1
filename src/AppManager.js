@@ -60,16 +60,68 @@ export function filterByCurrMonthOrWeek(data, type = "m") {
 }
 
 export function calculateAverage(array) {
-    return (array.reduce((sum, current) => sum + current) / array.length).toFixed(2);
+    return array?.length !== 0 ? (array.reduce((sum, current) => sum + current) / array.length).toFixed(2) : 0;
 }
 
 export function sortProperties(data){
-    let newData = { temperature: [], humidity: [], timestamp: [] };
+    let newData = { Temperature: [], Humidity: [], Pressure: [], Timestamp: [] };
     for (const key in data) {
         if (Object.hasOwnProperty.call(data, key)) {
             const read = data[key];
-            newData = { ...newData, temperature: [...newData.temperature, read.Temperature], humidity: [...newData.humidity, read.Humidity], timestamp: [...newData.timestamp, formatTimestamp(read.Timestamp)] };
+            if(read && read.Humidity && read.Temperature  && read.Pressure && read.Timestamp){
+                newData = { ...newData, Temperature: [...newData.Temperature, read.Temperature], Humidity: [...newData.Humidity, read.Humidity], Pressure: [...newData.Pressure, read.Pressure], Timestamp: [...newData.Timestamp, formatTimestamp(read.Timestamp)] };
+            }
         }
     }
     return newData;
 }
+
+export function generateUniqueNumbers(min, max, x) {
+    if (min >= max || x > (max - min + 1)) {
+      throw new Error("Invalid input: Minimum must be less than maximum, and x cannot be greater than the range size.");
+    }
+    let uniqueNumbers = [];
+    while (uniqueNumbers.length < x - 2) {
+      const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+      if (!uniqueNumbers.includes(randomNumber) && randomNumber !== max && randomNumber !== min) {
+        uniqueNumbers.push(randomNumber);
+      }
+    }
+    uniqueNumbers.sort()
+    uniqueNumbers.unshift(min);
+    uniqueNumbers.push(max);
+    return uniqueNumbers;
+}
+
+export function fakeSortProperties(data){
+    let newData = { Temperature: [], Humidity: [], Pressure: [], Timestamp: [] };
+    for (const key in data) {
+        if (Object.hasOwnProperty.call(data, key)) {
+            const read = data[key];
+            if(read && read.Humidity && read.Temperature  && read.Pressure && read.Timestamp){
+                newData = { ...newData, Temperature: [...newData.Temperature, read.Temperature], Humidity: [...newData.Humidity, read.Humidity], Pressure: [...newData.Pressure, read.Pressure], Timestamp: [...newData.Timestamp, read.Timestamp] };
+            }
+        }
+    }
+    return newData;
+}
+
+export function selectLatests(data){
+    const sorted = fakeSortProperties(data);
+    const max = sorted.Temperature.length - 1;
+    const min = max - 30;
+    const rand = generateUniqueNumbers(min, max, 15);
+    const selected = { };
+    for (let p = 0; p < rand.length; p++) {
+        const index = rand[p];
+        selected[sorted.Timestamp[index]] = {};
+        selected[sorted.Timestamp[index]].Temperature = sorted.Temperature[index];
+        selected[sorted.Timestamp[index]].Humidity = sorted.Humidity[index];
+        selected[sorted.Timestamp[index]].Pressure = sorted.Pressure[index];
+        selected[sorted.Timestamp[index]].Timestamp = sorted.Timestamp[index];
+    }
+    return selected;
+}
+
+
+  
