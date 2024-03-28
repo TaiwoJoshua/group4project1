@@ -24,7 +24,7 @@
 
 main{
   height: calc(100vh - 94px);
-  min-height: 410px;
+  min-height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
