@@ -10,12 +10,14 @@ import guage from '../images/guage.png';
 export default function Chart({ readings, fetched }) {
     const [data, setData] = React.useState({ Temperature: [], Humidity: [], Pressure: [], Timestamp: [] });
     const [range, setRange] = React.useState(0);
-    const [flip, setFlip] = React.useState(false);
+    const [flip, setFlip] = React.useState("latest");
     const [week, setWeek] = React.useState({ Temperature: 0, Humidity: 0, Pressure: 0 });
     const [month, setMonth] = React.useState({ Temperature: 0, Humidity: 0, Pressure: 0 });
     
     React.useEffect(() => {
-        if(flip){
+        if(flip === "hour"){
+            setRange(1);
+        }else if(flip === "day"){
             setRange(24);
         }else{
             setRange(0);
@@ -23,8 +25,7 @@ export default function Chart({ readings, fetched }) {
     }, [flip]);
 
     function handleFlip(event){
-        const { checked } = event.target;
-        setFlip(checked);
+        setFlip(event.target.value);
     }
 
     React.useEffect(() => {
@@ -175,7 +176,7 @@ export default function Chart({ readings, fetched }) {
             data: data.Humidity
         },
         {
-            name: 'Pressure HPa',
+            name: 'Pressure hPa',
             marker: {
                 symbol: 'circle'
             },
@@ -215,20 +216,42 @@ export default function Chart({ readings, fetched }) {
     return (
         <div className='chart'>
             <HighchartsReact highcharts={Highcharts} options={options} />
-            <span>
-                <input type="checkbox" name="flip" id='flip' onChange={handleFlip} checked={flip} />
-                <label htmlFor="flip">Flip</label>
-                <span>Month Average: Temperature - {month.Temperature} Humidity - {month.Humidity}  Pressure - {month.Pressure}</span>
-                <span>Week Average: Temperature - {week.Temperature} Humidity - {week.Humidity}  Pressure - {week.Pressure}</span>
-            </span>
-            <div className='select-style'>
-                <div class="select" tabindex="1">
-                    <input className="selectopt" name="test" type="radio" id="opt1" checked />
-                    <label for="opt1" class="option">Latest</label>
-                    <input className="selectopt" name="test" type="radio" id="opt2" />
-                    <label for="opt2" class="option">1 Hour</label>
-                    <input className="selectopt" name="test" type="radio" id="opt3" />
-                    <label for="opt3" class="option">1 Day</label>
+            <div className="select">
+                <button className="average-label">Average Readings</button>
+                <span className="average-data highcharts-label highcharts-tooltip highcharts-color-0" style={{cursor: "default", pointerEvents: "none", transform: "translate(144,154)"}}>
+                    <span style={{color: "rgb(51, 51, 51)", fontSize: "0.8em"}}>
+                        <span style={{fontSize: "0.8em"}}>Current Week</span>
+                        <span>
+                            <span style={{color: "rgb(44, 175, 254)"}}>●</span> Temperature °C: <span style={{fontWeight: "bold"}}>{week.Temperature}</span>
+                        </span>
+                        <span>
+                            <span style={{color: "rgb(84, 79, 197)"}}>●</span> Humidity %: <span style={{fontWeight: "bold"}}>{week.Humidity}</span>
+                        </span>
+                        <span>
+                            <span style={{color: "rgb(0, 226, 114)"}}>●</span> Pressure hPa: <span style={{fontWeight: "bold"}}>{week.Pressure}</span>
+                        </span>
+                        <br />
+                        <span style={{fontSize: "0.8em"}}>Current Month</span>
+                        <span>
+                            <span style={{color: "rgb(44, 175, 254)"}}>●</span> Temperature °C: <span style={{fontWeight: "bold"}}>{month.Temperature}</span>
+                        </span>
+                        <span>
+                            <span style={{color: "rgb(84, 79, 197)"}}>●</span> Humidity %: <span style={{fontWeight: "bold"}}>{month.Humidity}</span>
+                        </span>
+                        <span>
+                            <span style={{color: "rgb(0, 226, 114)"}}>●</span> Pressure hPa: <span style={{fontWeight: "bold"}}>{month.Pressure}</span>
+                        </span>
+                    </span>
+                </span>
+                <div className="hidden-toggles">
+                    <input name="flip" type="radio" id="hour" value={"hour"} checked={flip === "hour"} className="hidden-toggles__input" onChange={handleFlip} />
+                    <label htmlFor="hour" className="hidden-toggles__label">1 Hour</label>	
+				
+                    <input name="flip" type="radio" id="latest" value={"latest"} checked={flip === "latest"} className="hidden-toggles__input" onChange={handleFlip} />
+                    <label htmlFor="latest" className="hidden-toggles__label">Latest</label>
+                    
+                    <input name="flip" type="radio" id="day" value={"day"} checked={flip === "day"} className="hidden-toggles__input" onChange={handleFlip} />
+                    <label htmlFor="day" className="hidden-toggles__label">1 Day</label>
                 </div>
             </div>
         </div>

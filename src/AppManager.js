@@ -35,13 +35,34 @@ export function getMaximumTimestamp(data) {
 
 export function filterByRecentTime(data, timeThresholdInHours = 1) {
     const currentTimestamp = data.Current ? data.Current.Timestamp : 0;
-    // const currentTimestamp = getMaximumTimestamp(data);
     const thresholdTimestamp = currentTimestamp - timeThresholdInHours * 60 * 60 * 1000;
+    
     const filteredData = Object.fromEntries(
-      Object.entries(data).filter(([key]) => key >= thresholdTimestamp)
+        Object.entries(data)
+            .filter(([key]) => key !== "Current" && parseInt(key) >= thresholdTimestamp)
     );
-    return filteredData;
+
+    if (timeThresholdInHours === 1 && Object.keys(filteredData).length > 30) {
+        const keys = Object.keys(filteredData);
+        const lastKeys = keys.slice(-30);
+        const lastData = {};
+        lastKeys.forEach(key => {
+            lastData[key] = filteredData[key];
+        });
+        return lastData;
+    } else if(timeThresholdInHours === 24 && Object.keys(filteredData).length > 50){
+        const keys = Object.keys(filteredData);
+        const randomKeys = generateUniqueNumbers(0, keys.length - 1, 50);
+        const randomData = {};
+        randomKeys.forEach(key => {
+            randomData[key] = filteredData[key];
+        });
+        return randomData;
+    } else {
+        return filteredData;
+    }
 }
+
 
 function getDateWeek(date = 0) {
 	const currentDate = date !== 0 ? date : new Date();
@@ -60,7 +81,7 @@ export function filterByCurrMonthOrWeek(data, type = "m") {
 }
 
 export function calculateAverage(array) {
-    return array?.length !== 0 ? (array.reduce((sum, current) => sum + current) / array.length).toFixed(2) : 0;
+    return array?.length !== 0 ? (array.reduce((sum, current) => sum + current) / array.length).toFixed(1) : 0;
 }
 
 export function sortProperties(data){
@@ -76,12 +97,12 @@ export function sortProperties(data){
     return newData;
 }
 
-export function generateUniqueNumbers(min, max, x) {
-    if (min >= max || x > (max - min + 1)) {
+export function generateUniqueNumbers(min, max, num) {
+    if (min >= max || num > (max - min + 1)) {
       throw new Error("Invalid input: Minimum must be less than maximum, and x cannot be greater than the range size.");
     }
     let uniqueNumbers = [];
-    while (uniqueNumbers.length < x - 2) {
+    while (uniqueNumbers.length < num - 2) {
       const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
       if (!uniqueNumbers.includes(randomNumber) && randomNumber !== max && randomNumber !== min) {
         uniqueNumbers.push(randomNumber);
