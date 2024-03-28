@@ -23,7 +23,7 @@
 }
 
 main{
-  height: calc(100vh - 94px);
+  /* height: calc(100vh - 94px); */
   min-height: 420px;
   display: flex;
   align-items: center;
@@ -37,6 +37,19 @@ main>div:has(.chart){
 
 #navbar{
   padding: 10px;
+}
+
+#navbar>div{
+  display: flex;
+  font-size: 0.8em;
+}
+
+#navbar img{
+  height: 60px;
+  margin-right: 5px;
+}
+
+#navbar>h3{
   text-align: center;
 }
 

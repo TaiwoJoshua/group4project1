@@ -121,7 +121,7 @@ export default function Chart({ readings, fetched }) {
           type: 'spline'
         },
         title: {
-          text: 'Temperature, Humidity and Pressure Chart'
+          text: 'Humidity, Pressure and Temperature Chart'
         },
         subtitle: {
             text: ''
@@ -159,15 +159,7 @@ export default function Chart({ readings, fetched }) {
                 }
             }
         },
-        series: [
-        {
-            name: 'Temperature °C',
-            marker: {
-                symbol: 'square'
-            },
-            data: data.Temperature
-    
-        }, 
+        series: [ 
         {
             name: 'Humidity %',
             marker: {
@@ -181,6 +173,14 @@ export default function Chart({ readings, fetched }) {
                 symbol: 'circle'
             },
             data: data.Pressure
+        },
+        {
+            name: 'Temperature °C',
+            marker: {
+                symbol: 'square'
+            },
+            data: data.Temperature
+    
         }
         ],
         responsive: {
@@ -222,24 +222,24 @@ export default function Chart({ readings, fetched }) {
                     <span style={{color: "rgb(51, 51, 51)", fontSize: "0.8em"}}>
                         <span style={{fontSize: "0.8em"}}>Current Week</span>
                         <span>
-                            <span style={{color: "rgb(44, 175, 254)"}}>●</span> Temperature °C: <span style={{fontWeight: "bold"}}>{week.Temperature}</span>
-                        </span>
-                        <span>
                             <span style={{color: "rgb(84, 79, 197)"}}>●</span> Humidity %: <span style={{fontWeight: "bold"}}>{week.Humidity}</span>
                         </span>
                         <span>
                             <span style={{color: "rgb(0, 226, 114)"}}>●</span> Pressure hPa: <span style={{fontWeight: "bold"}}>{week.Pressure}</span>
                         </span>
+                        <span>
+                            <span style={{color: "rgb(44, 175, 254)"}}>●</span> Temperature °C: <span style={{fontWeight: "bold"}}>{week.Temperature}</span>
+                        </span>
                         <br />
                         <span style={{fontSize: "0.8em"}}>Current Month</span>
-                        <span>
-                            <span style={{color: "rgb(44, 175, 254)"}}>●</span> Temperature °C: <span style={{fontWeight: "bold"}}>{month.Temperature}</span>
-                        </span>
                         <span>
                             <span style={{color: "rgb(84, 79, 197)"}}>●</span> Humidity %: <span style={{fontWeight: "bold"}}>{month.Humidity}</span>
                         </span>
                         <span>
                             <span style={{color: "rgb(0, 226, 114)"}}>●</span> Pressure hPa: <span style={{fontWeight: "bold"}}>{month.Pressure}</span>
+                        </span>
+                        <span>
+                            <span style={{color: "rgb(44, 175, 254)"}}>●</span> Temperature °C: <span style={{fontWeight: "bold"}}>{month.Temperature}</span>
                         </span>
                     </span>
                 </span>
