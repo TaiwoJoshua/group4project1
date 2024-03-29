@@ -41,6 +41,7 @@ main>div:has(.chart){
 
 #navbar>div{
   display: flex;
+  align-items: flex-end;
   font-size: 0.8em;
 }
 
@@ -51,6 +52,7 @@ main>div:has(.chart){
 
 #navbar>h3{
   text-align: center;
+  margin: 5px;
 }
 
 #navbar>ul{
@@ -1038,4 +1040,64 @@ main>div:has(.chart){
 
 .average-label:hover + .average-data>span, .average-label:focus + .average-data>span{
   opacity: 1;
+}
+
+footer{
+  padding: 10px 5px;
+  text-align: center;
+}
+
+footer>div>span{
+  position: relative;
+  margin: 0 5px;
+}
+
+footer ul{
+  position: absolute;
+  top: -305px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 190px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+  background-color: white;
+  list-style-type: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+footer ul>li>a{
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  text-align: left;
+  font-size: 0.9em;
+  padding: 5px 10px;
+}
+
+footer ul>li>a:hover{
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+footer ul>li>a>span{
+  font-size: 0.8em;
+}
+
+footer button{
+  border: none;
+  background-color: transparent;
+  text-decoration: underline;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+footer button:hover, footer button:focus, footer span:has(ul:hover) button {
+  font-weight: bolder;
+}
+
+footer button:hover + ul, footer button:focus + ul, footer ul:hover{
+  opacity: 1;
+  pointer-events: initial;
 }

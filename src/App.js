@@ -10,6 +10,7 @@ import Humidity from './pages/Humidity';
 import { child, get, onValue, ref } from "firebase/database";
 import { database } from './api';
 import { getMaximumTimestamp } from './AppManager';
+import NotFound from './components/NotFound';
 
 const transition = { duration: 0.5 };
 
@@ -46,6 +47,7 @@ export default function App() {
 
     onValue(dbRef, (snapshot) => {
       setData(snapshot.val());
+      setFetched(true);
     });
   }, []);
 
@@ -73,16 +75,12 @@ export default function App() {
   }, [data]);
   
   const routes = [
-    { path: '/', element: <Chart readings={readings} />, errorElement: <Error /> },
+    { path: '/', element: <Chart readings={readings} fetched={fetched} />, errorElement: <Error /> },
     { path: 'chart', element: <Chart readings={readings} fetched={fetched} /> },
     { path: 'temperature', element: <Temperature current={current} /> },
     { path: 'humidity', element: <Humidity current={current} /> },
     { path: 'pressure', element: <Pressure current={current} /> },
-    // { path: 'parentComponent', parent: 'parentComponent', element: <Element /> },
-    // { path: '/', childOf: 'parentComponent', element: <Element /> },
-    // { path: 'childElement', childOf: 'parentComponent', element: <Element /> },
-    // { path: 'offline', element: <Offline /> },
-    // { path: '*', element: <NotFound /> },
+    { path: '*', element: <NotFound /> },
   ];
   
   const routerElements = {
