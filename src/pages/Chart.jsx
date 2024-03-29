@@ -13,6 +13,7 @@ export default function Chart({ readings, fetched }) {
     const [flip, setFlip] = React.useState("latest");
     const [week, setWeek] = React.useState({ Temperature: 0, Humidity: 0, Pressure: 0 });
     const [month, setMonth] = React.useState({ Temperature: 0, Humidity: 0, Pressure: 0 });
+    const [options, setOptions] = React.useState({ });
     React.useEffect(() => {
         if(flip === "hour"){
             setRange(1);
@@ -115,102 +116,105 @@ export default function Chart({ readings, fetched }) {
         }
     }, [readings, data, fetched]);
 
-    const options = {
-        chart: {
-          type: 'spline'
-        },
-        title: {
-          text: 'Humidity, Pressure and Temperature Chart'
-        },
-        subtitle: {
-            text: ''
-            // text: 'Group 4 Project 1'
-        },
-        xAxis: {
-            categories: data.Timestamp,
-            accessibility: {
-                description: 'Timestamp'
+    React.useEffect(() => {
+        const options = {
+            chart: {
+              type: 'spline'
             },
-            labels: {
-                formatter: function () {
-                    return "";
-                }
-            }
-        },
-        yAxis: {
             title: {
-                text: 'Readings'
+              text: 'Humidity, Pressure and Temperature Chart'
             },
-            labels: {
-                format: '{value}'
-            }
-        },
-        tooltip: {
-            crosshairs: true,
-            shared: true
-        },
-        plotOptions: {
-            spline: {
-                marker: {
-                    radius: 4,
-                    lineColor: '#666666',
-                    lineWidth: 1
-                }
-            }
-        },
-        series: [ 
-        {
-            name: 'Humidity %',
-            marker: {
-                symbol: 'diamond'
+            subtitle: {
+                text: ''
+                // text: 'Group 4 Project 1'
             },
-            data: data.Humidity
-        },
-        {
-            name: 'Pressure mPa',
-            marker: {
-                symbol: 'circle'
-            },
-            data: data.Pressure
-        },
-        {
-            name: 'Temperature °C',
-            marker: {
-                symbol: 'square'
-            },
-            data: data.Temperature
-    
-        }
-        ],
-        responsive: {
-            rules: [{
-                condition: {
-                    maxWidth: 500
+            xAxis: {
+                categories: data.Timestamp,
+                accessibility: {
+                    description: 'Timestamp'
                 },
-                // Make the labels less space demanding on mobile
-                chartOptions: {
-                    xAxis: {
-                        labels: {
-                            formatter: function () {
-                                return "";
-                                // return this.value.charAt(0);
-                            }
-                        }
-                    },
-                    yAxis: {
-                        labels: {
-                            align: 'left',
-                            x: 0,
-                            y: -2
-                        },
-                        title: {
-                            text: ''
-                        }
+                labels: {
+                    formatter: function () {
+                        return "";
                     }
                 }
-            }]
-        }
-    };
+            },
+            yAxis: {
+                title: {
+                    text: 'Readings'
+                },
+                labels: {
+                    format: '{value}'
+                }
+            },
+            tooltip: {
+                crosshairs: true,
+                shared: true
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        radius: 4,
+                        lineColor: '#666666',
+                        lineWidth: 1
+                    }
+                }
+            },
+            series: [ 
+            {
+                name: 'Humidity %',
+                marker: {
+                    symbol: 'diamond'
+                },
+                data: data.Humidity
+            },
+            {
+                name: 'Pressure mPa',
+                marker: {
+                    symbol: 'circle'
+                },
+                data: data.Pressure
+            },
+            {
+                name: 'Temperature °C',
+                marker: {
+                    symbol: 'square'
+                },
+                data: data.Temperature
+        
+            }
+            ],
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    // Make the labels less space demanding on mobile
+                    chartOptions: {
+                        xAxis: {
+                            labels: {
+                                formatter: function () {
+                                    return "";
+                                    // return this.value.charAt(0);
+                                }
+                            }
+                        },
+                        yAxis: {
+                            labels: {
+                                align: 'left',
+                                x: 0,
+                                y: -2
+                            },
+                            title: {
+                                text: ''
+                            }
+                        }
+                    }
+                }]
+            }
+        };
+        setOptions(options);
+    }, [data]);
 
     return (
         <div className='chart'>
