@@ -45,7 +45,7 @@ function Footer() {
                             </a>
                         </li>
                         <li>
-                            <a href="https://wa.me/2348147451257?text=Hello, I obtained your number from the CPE 405 Group 4 Project 1 website on which you supervised. My name is " rel='noreferrer' target='_blank'>
+                            <a href="https://wa.me/2347032566001?text=Hello, I obtained your number from the CPE 405 Group 4 Project 1 website on which you supervised. My name is " rel='noreferrer' target='_blank'>
                                 <strong>Dr. Omolayo, Abegunde</strong>
                                 <span>Lecturer / Supervisor</span>
                             </a>
