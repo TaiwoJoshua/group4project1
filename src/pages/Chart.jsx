@@ -89,7 +89,7 @@ export default function Chart({ readings, fetched }) {
                 setData({ Temperature: temps, Humidity: humds, Pressure: Pressures, Timestamp: newData.Timestamp });
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }, [readings, range, fetched]);
 
@@ -167,7 +167,7 @@ export default function Chart({ readings, fetched }) {
             data: data.Humidity
         },
         {
-            name: 'Pressure hPa',
+            name: 'Pressure mPa',
             marker: {
                 symbol: 'circle'
             },
@@ -224,7 +224,7 @@ export default function Chart({ readings, fetched }) {
                             <span style={{color: "rgb(84, 79, 197)"}}>●</span> Humidity %: <span style={{fontWeight: "bold"}}>{week.Humidity}</span>
                         </span>
                         <span>
-                            <span style={{color: "rgb(0, 226, 114)"}}>●</span> Pressure hPa: <span style={{fontWeight: "bold"}}>{week.Pressure}</span>
+                            <span style={{color: "rgb(0, 226, 114)"}}>●</span> Pressure mPa: <span style={{fontWeight: "bold"}}>{week.Pressure}</span>
                         </span>
                         <span>
                             <span style={{color: "rgb(44, 175, 254)"}}>●</span> Temperature °C: <span style={{fontWeight: "bold"}}>{week.Temperature}</span>
@@ -235,7 +235,7 @@ export default function Chart({ readings, fetched }) {
                             <span style={{color: "rgb(84, 79, 197)"}}>●</span> Humidity %: <span style={{fontWeight: "bold"}}>{month.Humidity}</span>
                         </span>
                         <span>
-                            <span style={{color: "rgb(0, 226, 114)"}}>●</span> Pressure hPa: <span style={{fontWeight: "bold"}}>{month.Pressure}</span>
+                            <span style={{color: "rgb(0, 226, 114)"}}>●</span> Pressure mPa: <span style={{fontWeight: "bold"}}>{month.Pressure}</span>
                         </span>
                         <span>
                             <span style={{color: "rgb(44, 175, 254)"}}>●</span> Temperature °C: <span style={{fontWeight: "bold"}}>{month.Temperature}</span>

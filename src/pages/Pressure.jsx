@@ -34,7 +34,7 @@ export default function Pressure({ current }) {
       <div className="wrapper">
         <div className="container">
           <div className="clock">
-            <p><span>{value.toFixed(1)}hPa</span></p>
+            <p><span>{value.toFixed(1)}mPa</span></p>
           </div>
           <ul className="clockline" id="clockline">
             <li></li>

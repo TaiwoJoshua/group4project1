@@ -42,7 +42,7 @@ export default function App() {
         console.log("No data available");
       }
     }).catch((error) => {
-      console.error(error);
+      // console.error(error);
     });
 
     onValue(dbRef, (snapshot) => {
@@ -55,12 +55,14 @@ export default function App() {
     let reads = {};
     for (const key in data) {
       if (Object.hasOwnProperty.call(data, key)) {
-        const reading = {...data[key], Pressure: data[key].Temperature + data[key].Humidity + Math.floor(Math.random() * 20) };
+        let reading = data[key];
         if(reading && reading.Temperature && reading.Humidity && reading.Pressure && reading.Timestamp){
+          reading = {...reading, Pressure: (parseFloat(reading.Pressure) / 10).toFixed(4) };
           reads[reading.Timestamp] = reading;
         }
       }
     }
+
     reads = Object.keys(reads).sort().reduce(
       (obj, key) => { 
         obj[key] = reads[key]; 

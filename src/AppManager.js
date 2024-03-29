@@ -47,7 +47,7 @@ export function filterByRecentTime(data, timeThresholdInHours = 1) {
         const lastKeys = keys.slice(-30);
         const lastData = {};
         lastKeys.forEach(key => {
-            lastData[key] = filteredData[key];
+            lastData[key] = filteredData[keys[key]];
         });
         return lastData;
     } else if(timeThresholdInHours === 24 && Object.keys(filteredData).length > 50){
@@ -55,7 +55,7 @@ export function filterByRecentTime(data, timeThresholdInHours = 1) {
         const randomKeys = generateUniqueNumbers(0, keys.length - 1, 50);
         const randomData = {};
         randomKeys.forEach(key => {
-            randomData[key] = filteredData[key];
+            randomData[key] = filteredData[keys[key]];
         });
         return randomData;
     } else {
@@ -90,7 +90,7 @@ export function sortProperties(data){
         if (Object.hasOwnProperty.call(data, key)) {
             const read = data[key];
             if(read && read.Humidity && read.Temperature  && read.Pressure && read.Timestamp){
-                newData = { ...newData, Temperature: [...newData.Temperature, read.Temperature], Humidity: [...newData.Humidity, read.Humidity], Pressure: [...newData.Pressure, read.Pressure], Timestamp: [...newData.Timestamp, formatTimestamp(read.Timestamp)] };
+                newData = { ...newData, Temperature: [...newData.Temperature, read.Temperature], Humidity: [...newData.Humidity, read.Humidity], Pressure: [...newData.Pressure, parseFloat(read.Pressure)], Timestamp: [...newData.Timestamp, formatTimestamp(read.Timestamp)] };
             }
         }
     }
