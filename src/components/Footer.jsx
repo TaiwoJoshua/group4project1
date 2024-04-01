@@ -21,7 +21,7 @@ function Footer() {
                             </a>
                         </li>
                         <li>
-                            <a href="https://wa.me/2348109849555?text=Hello, I obtained your number from the CPE 405 Group 4 Project 1 website on which you worked. My name is " rel='noreferrer' target='_blank'>
+                            <a href="https://www.linkedin.com/in/bright-tuma-31b731301?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" rel='noreferrer' target='_blank'>
                                 <strong>Tuma, Bright</strong>
                                 <span>RUN/CPE/20/8958</span>
                             </a>
@@ -33,7 +33,7 @@ function Footer() {
                             </a>
                         </li>
                         <li>
-                            <a href="https://wa.me/2348147451257?text=Hello, I obtained your number from the CPE 405 Group 4 Project 1 website on which you worked. My name is " rel='noreferrer' target='_blank'>
+                            <a href="https://www.linkedin.com/in/andy-umoh-959b5926b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" rel='noreferrer' target='_blank'>
                                 <strong>Umoh, Andiwam</strong>
                                 <span>RUN/CPE/20/8960</span>
                             </a>

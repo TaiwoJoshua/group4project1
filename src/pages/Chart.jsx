@@ -14,6 +14,7 @@ export default function Chart({ readings, fetched }) {
     const [week, setWeek] = React.useState({ Temperature: 0, Humidity: 0, Pressure: 0 });
     const [month, setMonth] = React.useState({ Temperature: 0, Humidity: 0, Pressure: 0 });
     const [options, setOptions] = React.useState({ });
+
     React.useEffect(() => {
         if(flip === "hour"){
             setRange(1);
